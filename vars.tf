@@ -8,6 +8,7 @@ variable "name" {
 
 variable "permissions" {
   type = string
+  default = null
 }
 
 variable "handler" {
