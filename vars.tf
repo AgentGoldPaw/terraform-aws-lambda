@@ -7,7 +7,7 @@ variable "name" {
 }
 
 variable "permissions" {
-  type = string
+  type    = string
   default = null
 }
 
@@ -26,6 +26,11 @@ variable "timeout" {
 variable "dynamo_stream" {
   type    = string
   default = null
+}
+
+variable "dynamo_stream_cloudwatch" {
+  type    = bool
+  default = false
 }
 
 variable "memory_size" {

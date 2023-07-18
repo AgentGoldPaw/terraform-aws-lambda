@@ -1,6 +1,6 @@
 locals {
   built_in_permissions = {
-    DYNAMO = jsonencode({
+    DYNAMO = {
       Version = "2012-10-17"
       Statement = [{
         Effect = "Allow"
@@ -14,7 +14,7 @@ locals {
         }
 
       ]
-    })
+    }
   }
   function_types = {
     DYNAMO = jsonencode({
@@ -42,4 +42,15 @@ locals {
       ]
     })
   }
+  dynamo_stream_cloudwatch_statement = merge(local.built_in_permissions.DYNAMO, {
+    Statement = local.built_in_permissions.DYNAMO.Statement + [{
+      Effect = "Allow"
+      Action = [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ]
+      Resource = "arn:aws:logs:*:*:*"
+    }]
+  })
 }

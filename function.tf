@@ -30,7 +30,7 @@ resource "aws_lambda_function" "the-function" {
 }
 
 resource "aws_lambda_event_source_mapping" "lambda_trigger" {
-  count = var.function_type == "DYNAMO" ? 1 : 0
+  count             = var.function_type == "DYNAMO" ? 1 : 0
   event_source_arn  = var.dynamo_stream
   function_name     = aws_lambda_function.the-function.function_name
   starting_position = "LATEST"
@@ -43,5 +43,5 @@ module "iam-role" {
   description   = "Role for ${var.name} function"
   assume_policy = local.function_types[var.function_type]
   policy_name   = "${var.name}-policy"
-  policy        = var.function_type == "DYNAMO" ? local.built_in_permissions[var.function_type] : var.permissions
+  policy        = var.function_type == "DYNAMO" ? var.dynamo_stream_cloudwatch ? local.dynamo_stream_cloudwatch_statement : local.built_in_permissions.DYNAMO : var.permissions
 }
