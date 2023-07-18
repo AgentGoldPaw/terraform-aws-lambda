@@ -29,6 +29,13 @@ resource "aws_lambda_function" "the-function" {
   }
 }
 
+resource "aws_lambda_event_source_mapping" "lambda_trigger" {
+  count = var.function_type == "DYNAMO" ? 1 : 0
+  event_source_arn  = var.dynamo_stream
+  function_name     = aws_lambda_function.the-function.function_name
+  starting_position = "LATEST"
+}
+
 module "iam-role" {
   source        = "RedMunroe/iam-role/aws"
   version       = "0.0.1"
