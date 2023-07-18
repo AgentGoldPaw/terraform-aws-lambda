@@ -42,8 +42,7 @@ locals {
       ]
     })
   }
-  dynamo_stream_cloudwatch_statement = merge(local.built_in_permissions.DYNAMO, {
-    Statement = [{
+  dynamo_stream_cloudwatch_statement = {
       Effect = "Allow"
       Action = [
         "logs:CreateLogGroup",
@@ -51,8 +50,12 @@ locals {
         "logs:PutLogEvents"
       ]
       Resource = "arn:aws:logs:*:*:*"
-    }]
-  })
+  }
+
+  dynamo_stream_cloudwatch_policy = {
+    Version = "2012-10-17"
+    Statement = [local.dynamo_stream_cloudwatch_statement, local.built_in_permissions["DYNAMO"].Statement[0]]
+  }
 
   permissions = var.function_type == "DYNAMO" ? jsonencode(local.built_in_permissions[var.function_type]) : var.permissions
   final_permissions = var.dynamo_stream_cloudwatch ? jsonencode(local.dynamo_stream_cloudwatch_statement) : local.permissions
