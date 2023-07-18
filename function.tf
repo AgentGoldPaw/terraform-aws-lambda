@@ -43,5 +43,5 @@ module "iam-role" {
   description   = "Role for ${var.name} function"
   assume_policy = local.function_types[var.function_type]
   policy_name   = "${var.name}-policy"
-  policy        = var.function_type == "DYNAMO" ? var.dynamo_stream_cloudwatch ? local.dynamo_stream_cloudwatch_statement : local.built_in_permissions.DYNAMO : var.permissions
+  policy        = var.function_type == "DYNAMO" ? (var.dynamo_stream_cloudwatch ? local.dynamo_stream_cloudwatch_statement : local.built_in_permissions.DYNAMO) : var.permissions
 }
