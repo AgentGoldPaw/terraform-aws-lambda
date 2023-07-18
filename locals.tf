@@ -43,7 +43,7 @@ locals {
     })
   }
   dynamo_stream_cloudwatch_statement = merge(local.built_in_permissions.DYNAMO, {
-    Statement = local.built_in_permissions.DYNAMO.Statement + [{
+    Statement = [{
       Effect = "Allow"
       Action = [
         "logs:CreateLogGroup",
