@@ -53,4 +53,7 @@ locals {
       Resource = "arn:aws:logs:*:*:*"
     }]
   })
+
+  permissions = var.function_type == "DYNAMO" ? local.built_in_permissions[var.function_type] : var.permissions
+  final_permissions = var.dynamo_stream_cloudwatch ? local.dynamo_stream_cloudwatch_statement : local.permissions
 }
