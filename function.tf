@@ -10,7 +10,7 @@ terraform {
 resource "aws_lambda_function" "the-function" {
   filename         = var.filename
   function_name    = var.name
-  role             = module.iam-role[0].role.arn
+  role             = module.iam-role.role.arn
   handler          = var.handler
   runtime          = var.runtime
   timeout          = var.timeout
