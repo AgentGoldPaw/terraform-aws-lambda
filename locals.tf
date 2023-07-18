@@ -58,5 +58,5 @@ locals {
   }
 
   permissions = var.function_type == "DYNAMO" ? jsonencode(local.built_in_permissions[var.function_type]) : var.permissions
-  final_permissions = var.dynamo_stream_cloudwatch ? jsonencode(local.dynamo_stream_cloudwatch_statement) : local.permissions
+  final_permissions = var.dynamo_stream_cloudwatch ? jsonencode(local.dynamo_stream_cloudwatch_policy) : local.permissions
 }
