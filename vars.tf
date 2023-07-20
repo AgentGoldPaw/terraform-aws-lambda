@@ -7,7 +7,14 @@ variable "name" {
 }
 
 variable "permissions" {
-  type    = string
+  type    = object({
+    Statement = list(object({
+      Effect   = string
+      Action   = list(string)
+      Resource = string
+    }))
+    Version = string
+  })
   default = null
 }
 

@@ -36,6 +36,11 @@ resource "aws_lambda_event_source_mapping" "lambda_trigger" {
   starting_position = "LATEST"
 }
 
+data "aws_iam_policy_document" "source_document_example" {
+  count = length(var.permissions) > 0 ? 1 : 0
+  source_policy_documents = [jsonencode(local.final_permissions), jsonencode(var.permissions)]
+}
+
 module "iam-role" {
   source        = "RedMunroe/iam-role/aws"
   version       = "0.0.1"
@@ -43,5 +48,5 @@ module "iam-role" {
   description   = "Role for ${var.name} function"
   assume_policy = local.function_types[var.function_type]
   policy_name   = "${var.name}-policy"
-  policy        = local.final_permissions
+  policy        = var.function_type == "DYNAMO" ? data.aws_iam_policy_document.source_document_example[0].json : jsonencode(var.permissions)
 }
