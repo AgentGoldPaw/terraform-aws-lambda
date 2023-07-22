@@ -35,6 +35,11 @@ variable "dynamo_stream" {
   default = null
 }
 
+variable "sqs_queue" {
+  type    = string
+  default = null
+}
+
 variable "dynamo_stream_cloudwatch" {
   type    = bool
   default = false

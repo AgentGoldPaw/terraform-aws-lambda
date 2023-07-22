@@ -12,11 +12,35 @@ locals {
         ]
         Resource = var.dynamo_stream
         }
-
+      ]
+    }
+    SQS = {
+      Version = "2012-10-17"
+      Statement = [{
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes",
+        ]
+        Resource = var.sqs_queue
+        }
       ]
     }
   }
   function_types = {
+    SQS = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Principal = {
+            Service = "lambda.amazonaws.com"
+          }
+          Action = "sts:AssumeRole"
+        }
+      ]
+    })
     DYNAMO = jsonencode({
       Version = "2012-10-17"
       Statement = [
